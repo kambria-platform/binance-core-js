@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "npm run build && npm publish",
+    "build": "npm run clean && npm run build-js",
+    "build-js": "babel lib -d dist && babel main.js -o index.js",
+    "clean": "rm -rf index.js && rm -rf dist && rm -rf ./node_modules/binance-core-js",
+    "fake-module": "mkdir -p ./node_modules/binance-core-js && cp -R ./index.js ./node_modules/binance-core-js && cp -R ./dist ./node_modules/binance-core-js",
+    "start": "npm run build && npm run fake-module && npm run serve",
+    "serve": "HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
+    "test": "npm run build && mocha"
   },
   "repository": {
     "type": "git",
@@ -21,5 +27,35 @@
   "bugs": {
     "url": "https://github.com/kambria-platform/binance-core-js/issues"
   },
-  "homepage": "https://github.com/kambria-platform/binance-core-js#readme"
+  "homepage": "https://github.com/kambria-platform/binance-core-js#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-react": "^7.0.0",
+    "nodemon": "^1.19.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "^3.0.1"
+  },
+  "dependencies": {
+    "@binance-chain/javascript-sdk": "^2.14.2",
+    "crypto-js": "^3.1.9-1",
+    "hdkey": "^1.1.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
