@@ -9,7 +9,7 @@
     "build-js": "babel lib -d dist && babel main.js -o index.js",
     "clean": "rm -rf index.js && rm -rf dist && rm -rf ./node_modules/binance-core-js",
     "fake-module": "mkdir -p ./node_modules/binance-core-js && cp -R ./index.js ./node_modules/binance-core-js && cp -R ./dist ./node_modules/binance-core-js",
-    "start": "npm run build && npm run fake-module && npm run serve",
+    "start": "nodemon --exec 'npm run build && npm run fake-module && npm run serve'",
     "serve": "HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
     "test": "npm run build && mocha"
   },
