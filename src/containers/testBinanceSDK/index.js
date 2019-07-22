@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { BinanceSDK } from 'binance-core-js';
+import configs from '../../config';
+import Helper from '../../helpers';
+
 
 const PRIVATE_KEY = '485647f8e0cdbe18865495847e0d0bd8a25b687804344aefb266e2bd369d4d27';
 const MNEMONIC = 'page term erupt print mystery sell cup purse arrow term corn couch inquiry parrot curtain clown owner daughter opera bleak february oven chat saddle';
@@ -47,7 +50,7 @@ class TestBinanceSDK extends Component {
       });
   }
 
-  connectByKeystore= () => {
+  connectByKeystore = () => {
     this.binanceSDK = new BinanceSDK(2, 'softwallet', true);
     this.binanceSDK.setAccountByKeystore(
       KEYSTORE,
@@ -66,11 +69,12 @@ class TestBinanceSDK extends Component {
     if (this.binanceSDK) this.binanceSDK.client.transfer(
       this.state.account,
       this.state.account,
-      1, 'BNB'
+      configs.params.amount, 'BNB'
     ).then(re => {
-      console.log(re.result[0].hash);
+      this.setState({ txId: re.result[0].hash });
     }).catch(er => {
       console.error(er);
+      this.setState({ txId: null });
     });
   }
 
@@ -94,6 +98,7 @@ class TestBinanceSDK extends Component {
         <p>Network: {this.state.network}</p>
         <p>Account: {this.state.account}</p>
         <p>Balance: {this.state.balance}</p>
+        <p>TxId: {Helper.linkToBinanceExplorer(this.state.txId)}</p>
       </div>
     );
   }

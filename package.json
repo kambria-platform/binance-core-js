@@ -9,8 +9,10 @@
     "build-js": "babel lib -d dist && babel main.js -o index.js",
     "clean": "rm -rf index.js && rm -rf dist && rm -rf ./node_modules/binance-core-js",
     "fake-module": "mkdir -p ./node_modules/binance-core-js && cp -R ./index.js ./node_modules/binance-core-js && cp -R ./dist ./node_modules/binance-core-js",
-    "start": "nodemon --exec 'npm run build && npm run fake-module && npm run serve'",
-    "serve": "HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
+    "start": "nodemon --exec 'npm run build && npm run fake-module && npm run serve-testnet'",
+    "mainnet": "nodemon --exec 'npm run build && npm run fake-module && npm run serve-mainnet'",
+    "serve-testnet": "REACT_APP_ENV=development HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
+    "serve-mainnet": "REACT_APP_ENV=production HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
     "test": "npm run build && mocha"
   },
   "repository": {
@@ -45,7 +47,9 @@
     "@binance-chain/javascript-sdk": "^2.14.2",
     "@ledgerhq/hw-transport-u2f": "^4.68.0",
     "@ledgerhq/hw-transport-webusb": "^4.68.0",
+    "@walletconnect/qrcode-modal": "^1.0.0-beta.29",
     "async": "^3.1.0",
+    "bech32": "^1.1.3",
     "crypto-js": "^3.1.9-1"
   },
   "browserslist": {

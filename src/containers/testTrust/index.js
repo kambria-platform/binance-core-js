@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Ledger } from 'binance-core-js';
+import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
+import { Trust } from 'binance-core-js';
 import configs from '../../config';
 import Helper from '../../helpers';
 
@@ -16,22 +17,30 @@ class TestBinanceSDK extends Component {
     this.state = { ...DEFAULT_STATE };
   }
 
-  connectByLedgerNanoS = () => {
-    this.ledger = new Ledger(2, 'softwallet', true);
-    this.ledger.setAccountByLedgerNanoS(
-      "m/44'/714'/0'/0",
-      0,
-      (er, re) => {
-        if (er) return console.error(er);
-        this.watcher = this.ledger.watch((er, re) => {
-          if (er) return console.error(er);
-          this.setState(re);
-        });
+  getAuthentication = {
+    open: (code, callback) => {
+      WalletConnectQRCodeModal.open(code, () => {
+        return callback('User denied to connect', null);
       });
+    },
+    close: () => {
+      WalletConnectQRCodeModal.close();
+    }
+  }
+
+  connectByTrustWallet = () => {
+    this.trust = new Trust(2, 'hybridwallet', true);
+    this.trust.setAccountByTrustWallet(this.getAuthentication, (er, re) => {
+      if (er) return console.error(er);
+      this.watcher = this.trust.watch((er, re) => {
+        if (er) return console.error(er);
+        this.setState(re);
+      });
+    });
   }
 
   sendTx = () => {
-    if (this.ledger) this.ledger.client.transfer(
+    if (this.trust) this.trust.client.transfer(
       this.state.account,
       this.state.account,
       configs.params.amount, 'BNB'
@@ -44,7 +53,7 @@ class TestBinanceSDK extends Component {
   }
 
   logout = () => {
-    if (this.ledger) this.ledger.logout();
+    if (this.trust) this.trust.logout();
   }
 
   componentWillUnmount() {
@@ -54,8 +63,8 @@ class TestBinanceSDK extends Component {
   render() {
     return (
       <div>
-        <h1>Ledger Test</h1>
-        <button onClick={this.connectByLedgerNanoS}>Connect by Ledger Nano S</button>
+        <h1>Trust Wallet Test</h1>
+        <button onClick={this.connectByTrustWallet}>Connect by Trust Wallet</button>
         <button onClick={this.sendTx}>Send</button>
         <button onClick={this.logout}>Logout</button>
         <p>Network: {this.state.network}</p>
