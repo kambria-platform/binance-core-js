@@ -29,7 +29,6 @@ class TestBinanceSDK extends Component {
   }
 
   connectByTrustWallet = () => {
-    console.log(configs)
     this.trust = new Trust(configs.params.network, 'hybridwallet', true);
     this.trust.setAccountByTrustWallet(this.getAuthentication, (er, re) => {
       if (er) return console.error(er);
