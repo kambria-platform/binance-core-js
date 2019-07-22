@@ -4,6 +4,7 @@ let configs = null;
 if (env === 'development') {
   configs = {
     params: {
+      network: 2,
       amount: 1
     },
     explorer: {
@@ -16,6 +17,7 @@ if (env === 'development') {
 if (env === 'production') {
   configs = {
     params: {
+      network: 1,
       amount: 0.0001
     },
     explorer: {

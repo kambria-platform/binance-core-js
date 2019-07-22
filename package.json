@@ -11,8 +11,8 @@
     "fake-module": "mkdir -p ./node_modules/binance-core-js && cp -R ./index.js ./node_modules/binance-core-js && cp -R ./dist ./node_modules/binance-core-js",
     "start": "nodemon --exec 'npm run build && npm run fake-module && npm run serve-testnet'",
     "mainnet": "nodemon --exec 'npm run build && npm run fake-module && npm run serve-mainnet'",
-    "serve-testnet": "REACT_APP_ENV=development HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
-    "serve-mainnet": "REACT_APP_ENV=production HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
+    "serve-testnet": "HTTPS=true PORT=3003 REACT_APP_ENV=development react-scripts start",
+    "serve-mainnet": "HTTPS=true PORT=3003 REACT_APP_ENV=production react-scripts start",
     "test": "npm run build && mocha"
   },
   "repository": {

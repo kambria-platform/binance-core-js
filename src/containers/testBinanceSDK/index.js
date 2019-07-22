@@ -22,7 +22,7 @@ class TestBinanceSDK extends Component {
   }
 
   connectByPrivatekey = () => {
-    this.binanceSDK = new BinanceSDK(2, 'softwallet', true);
+    this.binanceSDK = new BinanceSDK(configs.params.network, 'softwallet', true);
     this.binanceSDK.setAccountByPrivatekey(
       PRIVATE_KEY,
       cb => cb(null, 'dummy passphrase'),
@@ -36,7 +36,7 @@ class TestBinanceSDK extends Component {
   }
 
   connectByMnemonic = () => {
-    this.binanceSDK = new BinanceSDK(2, 'softwallet', true);
+    this.binanceSDK = new BinanceSDK(configs.params.network, 'softwallet', true);
     this.binanceSDK.setAccountByMnemonic(
       MNEMONIC,
       0,
@@ -51,7 +51,7 @@ class TestBinanceSDK extends Component {
   }
 
   connectByKeystore = () => {
-    this.binanceSDK = new BinanceSDK(2, 'softwallet', true);
+    this.binanceSDK = new BinanceSDK(configs.params.network, 'softwallet', true);
     this.binanceSDK.setAccountByKeystore(
       KEYSTORE,
       'ASDqwe12#',

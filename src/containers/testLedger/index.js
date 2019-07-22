@@ -17,7 +17,7 @@ class TestBinanceSDK extends Component {
   }
 
   connectByLedgerNanoS = () => {
-    this.ledger = new Ledger(2, 'softwallet', true);
+    this.ledger = new Ledger(configs.params.network, 'softwallet', true);
     this.ledger.setAccountByLedgerNanoS(
       "m/44'/714'/0'/0",
       0,
