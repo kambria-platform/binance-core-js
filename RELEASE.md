@@ -1,5 +1,18 @@
 # RELEASE LOG
 
+## 1.0.8
+
+### Fixes
+
+* Use `mainnet` as default network.
+
+### Enhancements
+
+* None
+  
+---
+
+
 ## 1.0.7
 
 ### Fixes
