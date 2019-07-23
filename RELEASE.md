@@ -1,5 +1,17 @@
 # RELEASE LOG
 
+## 1.0.7
+
+### Fixes
+
+* None
+
+### Enhancements
+
+* Support browser refreshing to `Trust Wallet` hybridwallet. 🎉🎉🎉
+  
+---
+
 ## 1.0.6
 
 ### Fixes
