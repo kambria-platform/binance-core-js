@@ -1,5 +1,18 @@
 # RELEASE LOG
 
+## 1.0.9
+
+### Fixes
+
+* Use `transport` of `binance-sdk` instead of separated packages.
+* Upgrade `binance-sdk` version to `2.14.4`
+
+### Enhancements
+
+* None
+  
+---
+
 ## 1.0.8
 
 ### Fixes

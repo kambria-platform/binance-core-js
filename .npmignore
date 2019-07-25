@@ -1,1 +1,2 @@
 # Empty file to prevent npm using .gitignore
+.package-lock.json

@@ -1,6 +1,6 @@
 {
   "name": "binance-core-js",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -44,9 +44,8 @@
     "react-scripts": "^3.0.1"
   },
   "dependencies": {
-    "@binance-chain/javascript-sdk": "^2.14.2",
-    "@ledgerhq/hw-transport-u2f": "^4.68.0",
-    "@ledgerhq/hw-transport-webusb": "^4.68.0",
+    "@binance-chain/javascript-sdk": "^2.14.4",
+    "@ledgerhq/hw-transport-webusb": "^4.68.2",
     "@walletconnect/qrcode-modal": "^1.0.0-beta.29",
     "async": "^3.1.0",
     "bech32": "^1.1.3",
