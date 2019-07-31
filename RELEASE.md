@@ -1,5 +1,19 @@
 # RELEASE LOG
 
+## 1.1.0
+
+### Fixes
+
+* None.
+
+### Enhancements
+
+* Restricted network will be `true` in all case. You cannot be able to config.
+* Self-define the type of wallet.
+* Allow `approveTransaction` and `waitTransaction` in config.
+  
+---
+
 ## 1.0.9
 
 ### Fixes

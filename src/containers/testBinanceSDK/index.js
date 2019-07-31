@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BinanceSDK } from 'binance-core-js';
+import Confirm from '../core/confirm';
 import configs from '../../config';
 import Helper from '../../helpers';
 
@@ -9,6 +10,7 @@ const MNEMONIC = 'page term erupt print mystery sell cup purse arrow term corn c
 const KEYSTORE = require('./5f80e75e-d947-4971-b2dc-45cd6b63c725_keystore.json');
 
 const DEFAULT_STATE = {
+  visible: false,
   network: null,
   account: null,
   balance: null,
@@ -19,13 +21,40 @@ class TestBinanceSDK extends Component {
   constructor() {
     super();
     this.state = { ...DEFAULT_STATE };
+    this.options = {
+      getPassphrase: this.getPassphrase,
+      getApproval: this.getApproval
+    }
+  }
+
+  getApproval = (params, callback) => {
+    let from = params.inputs[0].address
+    let to = params.outputs[0].address
+    let value = params.outputs[0].coins[0].amount / 10 ** 8
+    this.setState({
+      visible: true,
+      message: `From: ${from} / To: ${to} / Value: ${value}`,
+      onCancel: () => {
+        this.setState({ visible: false }, () => {
+          return callback(null, false);
+        });
+      },
+      onApprove: () => {
+        this.setState({ visible: false }, () => {
+          return callback(null, true);
+        });
+      }
+    });
+  }
+
+  getPassphrase = (callback) => {
+    return callback(null, 'dummy passphrase');
   }
 
   connectByPrivatekey = () => {
-    this.binanceSDK = new BinanceSDK(configs.params.network, 'softwallet', true);
+    this.binanceSDK = new BinanceSDK(configs.params.network, this.options);
     this.binanceSDK.setAccountByPrivatekey(
       PRIVATE_KEY,
-      cb => cb(null, 'dummy passphrase'),
       (er, client) => {
         if (er) return console.error(er);
         this.watcher = this.binanceSDK.watch((er, re) => {
@@ -36,11 +65,10 @@ class TestBinanceSDK extends Component {
   }
 
   connectByMnemonic = () => {
-    this.binanceSDK = new BinanceSDK(configs.params.network, 'softwallet', true);
+    this.binanceSDK = new BinanceSDK(configs.params.network, this.options);
     this.binanceSDK.setAccountByMnemonic(
       MNEMONIC,
       0,
-      cb => cb(null, 'dummy passphrase'),
       (er, client) => {
         if (er) return console.error(er);
         this.watcher = this.binanceSDK.watch((er, re) => {
@@ -51,11 +79,10 @@ class TestBinanceSDK extends Component {
   }
 
   connectByKeystore = () => {
-    this.binanceSDK = new BinanceSDK(configs.params.network, 'softwallet', true);
+    this.binanceSDK = new BinanceSDK(configs.params.network, this.options);
     this.binanceSDK.setAccountByKeystore(
       KEYSTORE,
       'ASDqwe12#',
-      cb => cb(null, 'dummy passphrase'),
       (er, client) => {
         if (er) return console.error(er);
         this.watcher = this.binanceSDK.watch((er, re) => {
@@ -99,6 +126,13 @@ class TestBinanceSDK extends Component {
         <p>Account: {this.state.account}</p>
         <p>Balance: {this.state.balance}</p>
         <p>TxId: {Helper.linkToBinanceExplorer(this.state.txId)}</p>
+        <Confirm
+          open={this.state.visible}
+          message={this.state.message}
+          onClose={this.state.onCancel}
+          onCancel={this.state.onCancel}
+          onApprove={this.state.onApprove}
+        />
       </div>
     );
   }

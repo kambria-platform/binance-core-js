@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
 import { Trust } from 'binance-core-js';
+import Confirm from '../core/confirm';
 import configs from '../../config';
 import Helper from '../../helpers';
 
 const DEFAULT_STATE = {
+  visible: false,
   network: null,
   account: null,
   balance: null,
@@ -15,6 +17,30 @@ class TestBinanceSDK extends Component {
   constructor() {
     super();
     this.state = { ...DEFAULT_STATE };
+    this.options = {
+      getAuthentication: this.getAuthentication,
+      getApproval: this.getApproval
+    }
+  }
+
+  getApproval = (params, callback) => {
+    let from = params.inputs[0].address
+    let to = params.outputs[0].address
+    let value = params.outputs[0].coins[0].amount / 10 ** 8
+    this.setState({
+      visible: true,
+      message: `From: ${from} / To: ${to} / Value: ${value}`,
+      onCancel: () => {
+        this.setState({ visible: false }, () => {
+          return callback(null, false);
+        });
+      },
+      onApprove: () => {
+        this.setState({ visible: false }, () => {
+          return callback(null, true);
+        });
+      }
+    });
   }
 
   getAuthentication = {
@@ -29,8 +55,8 @@ class TestBinanceSDK extends Component {
   }
 
   connectByTrustWallet = () => {
-    this.trust = new Trust(configs.params.network, 'hybridwallet', true);
-    this.trust.setAccountByTrustWallet(this.getAuthentication, (er, re) => {
+    this.trust = new Trust(configs.params.network, this.options);
+    this.trust.setAccountByTrustWallet((er, re) => {
       if (er) return console.error(er);
       this.watcher = this.trust.watch((er, re) => {
         if (er) return console.error(er);
@@ -71,6 +97,13 @@ class TestBinanceSDK extends Component {
         <p>Account: {this.state.account}</p>
         <p>Balance: {this.state.balance}</p>
         <p>TxId: {Helper.linkToBinanceExplorer(this.state.txId)}</p>
+        <Confirm
+          open={this.state.visible}
+          message={this.state.message}
+          onClose={this.state.onCancel}
+          onCancel={this.state.onCancel}
+          onApprove={this.state.onApprove}
+        />
       </div>
     );
   }

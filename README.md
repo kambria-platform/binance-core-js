@@ -41,8 +41,12 @@ import { BnbClient } from 'binance-core-js';
 import { Trust } from 'binance-core-js';
 
 var net = 2 \\ Your network id
-var type = 'hybridwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
+
+var getApproval = (txParams, callback) => {
+  // This function is show off the approval with transaction's params
+  // When user approve, return callback(null, true)
+  // If denied, return callback(null, false)
+}
 
 var getAuthentication = {
   open: (qrcode, callback) => {
@@ -55,7 +59,12 @@ var getAuthentication = {
   }
 }
 
-var trust = new Trust(net, type, restrictMode);
+const options = {
+  getApproval,
+  getAuthentication
+}
+
+var trust = new Trust(net, options);
 
 trust.getAccountsByTrustWallet((er, address) => {
   if (er) return console.error(er);
@@ -63,7 +72,7 @@ trust.getAccountsByTrustWallet((er, address) => {
   console.log('Address:', address);
 });
 
-trust.setAccountByTrustWallet(getAuthentication, (er, client) => {
+trust.setAccountByTrustWallet((er, client) => {
   if (er) return console.error(er);
 
   console.log('Provider instance is:', trust);
@@ -78,8 +87,12 @@ BinanceSDK is a group of software wallets. It includes mnemonic, keystore and pr
 import { BinanceSDK } from 'binance-core-js';
 
 var net = 2 \\ Your network id
-var type = 'softwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
+
+var getApproval = (txParams, callback) => {
+  // This function is show off the approval with transaction's params
+  // When user approve, return callback(null, true)
+  // If denied, return callback(null, false)
+}
 
 var getPassphrase = (callback) => {
   // This function to show off the input form
@@ -88,7 +101,12 @@ var getPassphrase = (callback) => {
   // If denied, return callback('Reason msg', null)
 }
 
-var binanceSDK = new BinanceSDK(net, type, restrictMode);
+const options = {
+  getApproval,
+  getAuthentication
+}
+
+var binanceSDK = new BinanceSDK(net, options);
 
 
 // Privatekey
@@ -101,7 +119,7 @@ binanceSDK.getAccountByPrivatekey(privatekey, (er, address) => {
 });
 
 var privatekey = ... // Private key
-binanceSDK.setAccountByPrivatekey(privatekey, getPassphrase, (er, web3) => {
+binanceSDK.setAccountByPrivatekey(privatekey, (er, web3) => {
   if (er) return console.error(er);
 
   console.log('Provider instance is:', binanceSDK);
@@ -121,8 +139,7 @@ binanceSDK.getAccountsByMnemonic(mnemonic, limit, page, (er, addresses) => {
 
 var mnemonic = ... // Mnemonic string
 var index = ... // Address index
-var 
-binanceSDK.setAccountByMnemonic(mnemonic, index, getPassphrase, getPassphrase, (er, client) => {
+var binanceSDK.setAccountByMnemonic(mnemonic, index, (er, client) => {
   if (er) return console.error(er);
 
   console.log('Provider instance is:', binanceSDK);
@@ -141,7 +158,7 @@ binanceSDK.getAccountByKeystore(input, password, (er, address) => {
 
 var input = ... // Json object of keystore
 var password = .. // Keystore password
-binanceSDK.setAccountByKeystore(input, password, getPassphrase, (er, web3) => {
+binanceSDK.setAccountByKeystore(input, password, (er, web3) => {
   if (er) return console.error(er);
 
   console.log('Provider instance is:', binanceSDK);
@@ -154,10 +171,28 @@ binanceSDK.setAccountByKeystore(input, password, getPassphrase, (er, web3) => {
 import { Ledger } from 'binance-core-js';
 
 var net = 2 \\ Your network id
-var type = 'hardwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
-var ledger = new Ledger(net, type, restrictMode);
+var getApproval = (txParams, callback) => {
+  // This function is show off the approval with transaction's params
+  // When user approve, return callback(null, true)
+  // If denied, return callback(null, false)
+}
+
+var getWaiting = {
+  open: () => {
+    // Open waiting modal
+  },
+  close: () => {
+    // Close waiting modal
+  }
+}
+
+const options = {
+  getApproval,
+  getWaiting
+}
+
+var ledger = new Ledger(net, options);
 
 var path = ... // Derivation path
 var limit = ... // The number of records in a page (pagination)
@@ -229,15 +264,25 @@ class Example extends Component {
   constructor() {
     super();
 
+    this.options = {
+      getApprove: this.getApprove,
+      getPassphrase: this.getPassphrase
+    }
     this.binanceSDK = new BinanceSDK(NETWORK, TYPE, RESTRICT);
   }
 
   componentDidMount() {
-    this.binanceSDK.setAccountByMnemonic(accOpts.mnemonic, accOpts.index, this.getPassphrase, (er, re) => {
+    this.binanceSDK.setAccountByMnemonic(accOpts.mnemonic, accOpts.index, (er, re) => {
       if (er) return console.error(er);
 
       console.log('Provider instance is:', this.binanceSDK);
     });
+  }
+
+  getApprove = (txParams, callback) => {
+    var approved = window.confirm(JSON.stringify(txParams));
+    if (approved) return callback(null, true);
+    return callback(null, false);
   }
 
   getPassphrase(callback) {
