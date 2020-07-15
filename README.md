@@ -1,6 +1,6 @@
 # Introduction
 
-🚀 Binance-Core-JS serves a friendly interface of several Binance wallets and that might help developers can instantly power their Dapps. Binance-Core-JS is an opensource and you can feel free to use it as well as contribute it.
+🚀 BinanceCoreJS serves a friendly interface of several Binance wallets and that might help developers can instantly power up their Dapps. BinanceCoreJS is an open-source. You can freely use it, and contribute it as well.
 
 * [View release log](./RELEASE.md)
 

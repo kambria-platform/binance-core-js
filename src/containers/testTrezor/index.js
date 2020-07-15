@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
-import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
-import { Trust } from 'binance-core-js';
+import { Trezor } from 'binance-core-js';
 import Confirm from '../core/confirm';
+import Waiting from '../core/waiting';
 import configs from '../../config';
 import Helper from '../../helpers';
 
 const DEFAULT_STATE = {
   visible: false,
+  waiting: false,
   network: null,
   account: null,
   balance: null,
   txId: null,
 }
 
-class TestTrust extends Component {
+class TestTrezor extends Component {
   constructor() {
     super();
     this.state = { ...DEFAULT_STATE };
     this.options = {
-      getAuthentication: this.getAuthentication,
+      getWaiting: this.getWaiting,
       getApproval: this.getApproval
     }
   }
@@ -43,54 +44,52 @@ class TestTrust extends Component {
     });
   }
 
-  getAuthentication = {
-    open: (code, callback) => {
-      WalletConnectQRCodeModal.open(code, () => {
-        return callback('User denied to connect', null);
-      });
+  getWaiting = {
+    open: () => {
+      this.setState({ waiting: true });
     },
     close: () => {
-      WalletConnectQRCodeModal.close();
+      this.setState({ waiting: false });
     }
   }
 
-  connectByTrustWallet = () => {
-    this.trust = new Trust(configs.params.network, this.options);
-    this.trust.setAccountByTrustWallet((er, re) => {
+  connectByTrezorOne = () => {
+    this.trezor = new Trezor(configs.params.network, this.options);
+    return this.trezor.setAccountByTrezorOne("m/44'/714'/0'/0", 0, (er, re) => {
       if (er) return console.error(er);
-      this.watcher = this.trust.watch((er, re) => {
+      return this.watcher = this.trezor.watch((er, re) => {
         if (er) return console.error(er);
-        this.setState(re);
+        return this.setState(re);
       });
     });
   }
 
   sendTx = () => {
-    if (this.trust) this.trust.client.transfer(
+    if (this.trezor) return this.trezor.client.transfer(
       this.state.account,
       this.state.account,
       configs.params.amount, 'BNB'
     ).then(re => {
-      this.setState({ txId: re.result[0].hash });
+      return this.setState({ txId: re.result[0].hash });
     }).catch(er => {
       console.error(er);
-      this.setState({ txId: null });
+      return this.setState({ txId: null });
     });
   }
 
   logout = () => {
-    if (this.trust) this.trust.logout();
+    if (this.trezor) return this.trezor.logout();
   }
 
   componentWillUnmount() {
-    if (this.watcher) this.watcher.stopWatching();
+    if (this.watcher) return this.watcher.stopWatching();
   }
 
   render() {
     return (
       <div>
-        <h1>Trust Wallet Test</h1>
-        <button onClick={this.connectByTrustWallet}>Connect by Trust Wallet</button>
+        <h1>Trezor Test</h1>
+        <button onClick={this.connectByTrezorOne}>Connect by Trezor One</button>
         <button onClick={this.sendTx}>Send</button>
         <button onClick={this.logout}>Logout</button>
         <p>Network: {this.state.network}</p>
@@ -104,9 +103,10 @@ class TestTrust extends Component {
           onCancel={this.state.onCancel}
           onApprove={this.state.onApprove}
         />
+        <Waiting open={this.state.waiting} />
       </div>
     );
   }
 }
 
-export default TestTrust;
+export default TestTrezor;

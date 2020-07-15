@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import TestBinanceSDK from './testBinanceSDK';
 import TestLedger from './testLedger';
+import TestTrezor from './testTrezor';
 import TestTrust from './testTrust';
 
 const margin = { margin: '10px' }
@@ -15,6 +16,7 @@ class App extends Component {
           <header>
             <Link style={margin} to='/binancesdk'>Test Binance SDK</Link>
             <Link style={margin} to='/ledger'>Test Ledger</Link>
+            <Link style={margin} to='/trezor'>Test Trezor</Link>
             <Link style={margin} to='/trust'>Test Trust</Link>
           </header>
           <main style={margin}>
@@ -22,6 +24,7 @@ class App extends Component {
               <Redirect exact from='/' to='/binancesdk' />
               <Route exact path='/binancesdk' component={TestBinanceSDK} />
               <Route exact path='/ledger' component={TestLedger} />
+              <Route exact path='/trezor' component={TestTrezor} />
               <Route exact path='/trust' component={TestTrust} />
             </Switch>
           </main>

@@ -14,7 +14,7 @@ const DEFAULT_STATE = {
   txId: null,
 }
 
-class TestBinanceSDK extends Component {
+class TestLedger extends Component {
   constructor() {
     super();
     this.state = { ...DEFAULT_STATE };
@@ -112,4 +112,4 @@ class TestBinanceSDK extends Component {
   }
 }
 
-export default TestBinanceSDK;
+export default TestLedger;

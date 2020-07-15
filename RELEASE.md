@@ -1,5 +1,15 @@
 # RELEASE LOG
 
+## 1.2.0
+
+### Fixes
+
+* Update dependencies
+
+### Enhancements
+
+* Pre-support Trezor
+
 ## 1.1.0 - 1.1.1
 
 ### Fixes
