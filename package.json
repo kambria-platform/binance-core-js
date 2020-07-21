@@ -1,6 +1,6 @@
 {
   "name": "binance-core-js",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "🚀 BinanceCoreJS build a friendly interface of several Binance wallets and that might help developers can instantly power up their Dapps.",
   "main": "index.js",
   "scripts": {

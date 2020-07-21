@@ -25,7 +25,7 @@ testnet: 2
 
 # API
 
-## BnbClient module
+## BncClient module
 
 In case you would like to fetch some info from blockchain without account association, `BncClient` is for you.
 
