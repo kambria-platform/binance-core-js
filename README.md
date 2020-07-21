@@ -27,12 +27,12 @@ testnet: 2
 
 ## BnbClient module
 
-In case you would like to fetch some info from blockchain without account association, `BnbClient` is for you.
+In case you would like to fetch some info from blockchain without account association, `BncClient` is for you.
 
 You can find the document [here](https://github.com/binance-chain/javascript-sdk/wiki/API-Documentation)
 
 ```
-import { BnbClient } from 'binance-core-js';
+import { BncClient } from 'binance-core-js';
 ```
 
 ## Trust (Trust Wallet) module
