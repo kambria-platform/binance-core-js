@@ -18,7 +18,7 @@
 
 ### Enhancements
 
-* Restricted network will be `true` in all case. You cannot be able to config.
+* Restricted network will be `true` in all cases. You cannot be able to config.
 * Self-define the type of wallet.
 * Allow `approveTransaction` and `waitTransaction` in config.
   
