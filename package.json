@@ -49,7 +49,7 @@
     "@walletconnect/qrcode-modal": "^1.0.15",
     "async": "^3.2.0",
     "bech32": "^1.1.4",
-    "crypto-js": "^3.3.0",
+    "crypto-js": "^4.2.0",
     "trezor-connect": "^8.1.7"
   },
   "browserslist": {
